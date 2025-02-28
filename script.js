@@ -3,10 +3,17 @@ const ctx = canvas.getContext('2d');
 
 let particlesArray = [];
 const numberOfParticles = 1000; // Adjusted for better density
-const glowRadius = 7; // Glow effect radius
+const glowRadius = 10; // Glow effect radius
 const heartScale = 200; // Scale of the heart
-const idleAmplitude = 6; // Amplitude of idle animation
+const idleAmplitude = 5; // Amplitude of idle animation
 const idleSpeed = 0.008; // Speed of idle animation
+
+// Ripple effect variables
+let ripples = []; // Stores multiple ripples
+const rippleRadius = 150; // Radius of the ripple effect
+const rippleStrength = 16; // Strength of the ripple effect
+const rippleDecay = 0.95; // How quickly the ripple fades
+const rippleWaveSpeed = 5; // Speed of the ripple wave propagation
 
 class Particle {
   constructor(x, y) {
@@ -40,16 +47,16 @@ class Particle {
     this.x = this.baseX + Math.cos(this.angle) * idleAmplitude;
     this.y = this.baseY + Math.sin(this.angle) * idleAmplitude;
 
-    // Calculate distance between particle and mouse
+    // Calculate distance between particle and mouse/touch
     const dx = mouse.x - this.x;
     const dy = mouse.y - this.y;
     const distance = Math.sqrt(dx * dx + dy * dy);
 
-    // Move particles away from the mouse
+    // Move particles away from the mouse/touch
     const forceDirectionX = dx / distance;
     const forceDirectionY = dy / distance;
-    const maxDistance = 150; // Hover radius
-    const force = ((maxDistance - distance) / maxDistance) * 4; // Adjust the multiplier for hover strength
+    const maxDistance = 100; // Hover radius
+    const force = ((maxDistance - distance) / maxDistance) * 2; // Adjust the multiplier for hover strength
 
     if (distance < maxDistance) {
       this.x -= forceDirectionX * force * this.density;
@@ -58,11 +65,25 @@ class Particle {
       // Return particles to their original position (slower)
       if (this.x !== this.baseX) {
         const dx = this.baseX - this.x;
-        this.x += dx / 20000000000000; // Slower return speed (larger divisor)
+        this.x += dx / 20; // Slower return speed (larger divisor)
       }
       if (this.y !== this.baseY) {
         const dy = this.baseY - this.y;
-        this.y += dy / 2000000000000; // Slower return speed (larger divisor)
+        this.y += dy / 20; // Slower return speed (larger divisor)
+      }
+    }
+
+    // Apply ripple effects
+    for (let i = 0; i < ripples.length; i++) {
+      const ripple = ripples[i];
+      const rippleDx = this.x - ripple.x;
+      const rippleDy = this.y - ripple.y;
+      const rippleDistance = Math.sqrt(rippleDx * rippleDx + rippleDy * rippleDy);
+
+      if (rippleDistance < ripple.radius) {
+        const rippleForce = Math.sin((rippleDistance / ripple.radius) * Math.PI) * ripple.strength;
+        this.x += (rippleDx / rippleDistance) * rippleForce;
+        this.y += (rippleDy / rippleDistance) * rippleForce;
       }
     }
   }
@@ -108,6 +129,17 @@ function init() {
 function animate() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+  // Update ripples
+  for (let i = ripples.length - 1; i >= 0; i--) {
+    ripples[i].radius += rippleWaveSpeed; // Expand the ripple
+    ripples[i].strength *= rippleDecay; // Reduce ripple strength
+
+    // Remove ripple if it's too weak or too large
+    if (ripples[i].strength < 0.1 || ripples[i].radius > canvas.width * 2) {
+      ripples.splice(i, 1);
+    }
+  }
+
   for (let i = 0; i < particlesArray.length; i++) {
     particlesArray[i].draw();
     particlesArray[i].update(mouse);
@@ -116,12 +148,44 @@ function animate() {
   requestAnimationFrame(animate);
 }
 
-// Track mouse position
+// Track touch/mouse position
 const mouse = {
   x: null,
   y: null,
 };
 
+// Handle touch events
+function handleTouchStart(e) {
+  const touch = e.touches[0];
+  mouse.x = touch.clientX;
+  mouse.y = touch.clientY;
+
+  // Trigger ripple effect on touch
+  ripples.push({
+    x: touch.clientX,
+    y: touch.clientY,
+    radius: 0, // Start with a small radius
+    strength: rippleStrength, // Initial ripple strength
+  });
+}
+
+function handleTouchMove(e) {
+  const touch = e.touches[0];
+  mouse.x = touch.clientX;
+  mouse.y = touch.clientY;
+}
+
+function handleTouchEnd() {
+  mouse.x = undefined;
+  mouse.y = undefined;
+}
+
+// Add touch event listeners
+canvas.addEventListener('touchstart', handleTouchStart);
+canvas.addEventListener('touchmove', handleTouchMove);
+canvas.addEventListener('touchend', handleTouchEnd);
+
+// Handle mouse events (for desktop compatibility)
 canvas.addEventListener('mousemove', (e) => {
   mouse.x = e.clientX;
   mouse.y = e.clientY;
@@ -130,6 +194,15 @@ canvas.addEventListener('mousemove', (e) => {
 canvas.addEventListener('mouseleave', () => {
   mouse.x = undefined;
   mouse.y = undefined;
+});
+
+canvas.addEventListener('click', (e) => {
+  ripples.push({
+    x: e.clientX,
+    y: e.clientY,
+    radius: 0, // Start with a small radius
+    strength: rippleStrength, // Initial ripple strength
+  });
 });
 
 // Handle window resize
