@@ -3,14 +3,32 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cha</title>
+  <title>Heart Animation with Background Music</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <!-- Heart Animation Canvas -->
   <canvas id="heartCanvas"></canvas>
-  <!-- Background Music -->
-  <audio id="background-music" src="assets/magic.mp3" loop></audio>
+
+  <!-- Start Music Button -->
+  <button id="start-music">Start Music</button>
+
+  <audio id="bg-music" loop>
+    <source src="assets/magic.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const audio = document.getElementById("bg-music");
+
+    function playAudio() {
+        audio.play().catch(error => console.log("Autoplay blocked:", error));
+        document.removeEventListener("click", playAudio); // Remove event after first click
+    }
+
+    document.addEventListener("click", playAudio);
+});
+</script>
 
   <script src="script.js"></script>
 </body>
