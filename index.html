@@ -1,13 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
-Je te laisse ce dernier message, en espérant que tu le liras si un jour il te repasse par la tête que j'avais crée un petit endroit pour toi, pour te rappeler que je t'aimais fort, plus fort que n'importe quelle autre entité dans mon entourage.
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Heart Animation with Background Music</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Heart Animation Canvas -->
+  <canvas id="heartCanvas"></canvas>
 
-Merci d'être venue dans ma vie, merci pour tous les moments qu'on a passé ensemble, merci d'avoir été à l'écoute et merci d'avoir été patiente avec moi lors de la rupture.
+  <!-- Start Music Button -->
+  <button id="start-music">Start Music</button>
 
-Je ne t'oublierai pas, même si pour toi nous n'étions "qu'un flirt", pour moi nous étions plus que celà, c'est pour celà que je suis reparti avec des regrets.
+  <audio id="bg-music" loop>
+    <source src="assets/magic.mp3" type="audio/mpeg">
+</audio>
 
-Je te souhaite le meilleur dans ta vie, je sais que tu es une bonne personne, et que tu iras loin dans la vie. J'espère pour toi que tu trouveras quelqu'un que tu pourras réellement aimer, et que celà sera réciproque.
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const audio = document.getElementById("bg-music");
 
-Je ne souhaite plus avoir de relation avec toi, que ce soit une amitié ou un amour, pour des raisons que je garderai pour moi. Si un jour tu veux me recontacter, tu peux, mais n'en abuse pas.
+    function playAudio() {
+        audio.play().catch(error => console.log("Autoplay blocked:", error));
+        document.removeEventListener("click", playAudio); // Remove event after first click
+    }
 
-Merci.
+    document.addEventListener("click", playAudio);
+});
+</script>
+
+  <script src="script.js"></script>
+</body>
+</html>
