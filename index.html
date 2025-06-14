@@ -3,29 +3,29 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cha</title>
+  <title>chachaaaa</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <!-- Heart Animation Canvas -->
-  <canvas id="heartCanvas"></canvas>
-  <audio id="bg-music" loop>
-    <source src="assets/magic.mp3" type="audio/mpeg">
-</audio>
+  <!-- Audio Player -->
+  <audio id="bg-music" autoplay loop>
+    <source src="https://t4.bcbits.com/stream/723c41ff4830f20c23ed582a1ad86f41/mp3-128/1205930633?p=0&ts=1750030372&t=30e33de82f53f0394985d5851edb5b0416265f58&token=1750030372_fae6133409de6ebd4d33b0742ff97e949242cb8a" type="audio/mpeg">
+    change de navigateur bogoss
+  </audio>
 
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-    const audio = document.getElementById("bg-music");
+  <script>
+    // Ensure music plays even with autoplay restrictions (in case of blocked autoplay)
+    document.addEventListener("DOMContentLoaded", function() {
+      const audio = document.getElementById("bg-music");
 
-    function playAudio() {
+      // Try playing the audio when the page loads
+      function playAudio() {
         audio.play().catch(error => console.log("Autoplay blocked:", error));
-        document.removeEventListener("click", playAudio); // Remove event after first click
-    }
+      }
 
-    document.addEventListener("click", playAudio);
-});
-</script>
-
-  <script src="script.js"></script>
+      // Attempt to play the audio on the first user interaction (e.g., click)
+      document.addEventListener("click", playAudio);
+    });
+  </script>
 </body>
 </html>
