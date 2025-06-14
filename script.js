@@ -3,7 +3,7 @@ const ctx = canvas.getContext('2d');
 
 let particlesArray = [];
 const numberOfParticles = 1000; // Adjusted for better density
-const glowRadius = 10; // Glow effect radius
+const glowRadius = 6; // Glow effect radius
 const heartScale = 200; // Scale of the heart
 const idleAmplitude = 5; // Amplitude of idle animation
 const idleSpeed = 0.008; // Speed of idle animation
@@ -11,9 +11,9 @@ const idleSpeed = 0.008; // Speed of idle animation
 // Ripple effect variables
 let ripples = []; // Stores multiple ripples
 const rippleRadius = 150; // Radius of the ripple effect
-const rippleStrength = 16; // Strength of the ripple effect
+const rippleStrength = 10; // Strength of the ripple effect
 const rippleDecay = 0.95; // How quickly the ripple fades
-const rippleWaveSpeed = 5; // Speed of the ripple wave propagation
+const rippleWaveSpeed = 3; // Speed of the ripple wave propagation
 
 class Particle {
   constructor(x, y) {
@@ -156,6 +156,7 @@ const mouse = {
 
 // Handle touch events
 function handleTouchStart(e) {
+  e.preventDefault(); // Prevent default touch behavior (e.g., scrolling)
   const touch = e.touches[0];
   mouse.x = touch.clientX;
   mouse.y = touch.clientY;
@@ -167,22 +168,29 @@ function handleTouchStart(e) {
     radius: 0, // Start with a small radius
     strength: rippleStrength, // Initial ripple strength
   });
+
+  console.log('Touch started at:', touch.clientX, touch.clientY); // Debugging
 }
 
 function handleTouchMove(e) {
+  e.preventDefault(); // Prevent default touch behavior
   const touch = e.touches[0];
   mouse.x = touch.clientX;
   mouse.y = touch.clientY;
+
+  console.log('Touch moved to:', touch.clientX, touch.clientY); // Debugging
 }
 
 function handleTouchEnd() {
   mouse.x = undefined;
   mouse.y = undefined;
+
+  console.log('Touch ended'); // Debugging
 }
 
 // Add touch event listeners
-canvas.addEventListener('touchstart', handleTouchStart);
-canvas.addEventListener('touchmove', handleTouchMove);
+canvas.addEventListener('touchstart', handleTouchStart, { passive: false });
+canvas.addEventListener('touchmove', handleTouchMove, { passive: false });
 canvas.addEventListener('touchend', handleTouchEnd);
 
 // Handle mouse events (for desktop compatibility)
