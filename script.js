@@ -183,4 +183,20 @@ canvas.addEventListener('mouseleave', () => {
 canvas.addEventListener('click', (e) => {
   ripples.push({
     x: e.clientX,
-    y:
+    y: e.clientY,
+    radius: 0,
+    strength: rippleStrength,
+  });
+});
+
+function handleResize() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  updateHeartScale();
+  init();
+}
+
+window.addEventListener('resize', handleResize);
+
+handleResize();
+animate();
