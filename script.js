@@ -100,7 +100,7 @@ function isPointInHeart(x, y, scale) {
 }
 
 function updateHeartScale() {
-  heartScale = Math.min(canvas.width, canvas.height) / 3;
+  heartScale = Math.min(canvas.width, canvas.height) / 2.5;
 }
 
 function init() {
