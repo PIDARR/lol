@@ -4,11 +4,10 @@ const ctx = canvas.getContext('2d');
 let particlesArray = [];
 const numberOfParticles = 1000;
 const glowRadius = 6;
-let heartScale; // dynamic now!
+let heartScale;
 const idleAmplitude = 5;
 const idleSpeed = 0.008;
 
-// Ripple variables
 let ripples = [];
 const rippleRadius = 120;
 const rippleStrength = 12;
@@ -101,7 +100,7 @@ function isPointInHeart(x, y, scale) {
 }
 
 function updateHeartScale() {
-  heartScale = Math.min(canvas.width, canvas.height) / 4; // dynamic scale
+  heartScale = Math.min(canvas.width, canvas.height) / 3;
 }
 
 function init() {
@@ -193,12 +192,11 @@ canvas.addEventListener('click', (e) => {
 function handleResize() {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
-  updateHeartScale(); // Update scale dynamically
-  init(); // Re-center heart
+  updateHeartScale();
+  init();
 }
 
 window.addEventListener('resize', handleResize);
 
-// Initialize everything
 handleResize();
 animate();
