@@ -4,34 +4,30 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>chachaaa</title>
-  <link rel="stylesheet" href="styles.css"> <!-- Link to your separate CSS -->
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <!-- Heart Animation Canvas -->
+
   <canvas id="heartCanvas"></canvas>
 
-  <!-- Background Music -->
   <audio id="bg-music" loop>
     <source src="https://t4.bcbits.com/stream/723c41ff4830f20c23ed582a1ad86f41/mp3-128/1205930633?p=0&ts=1750030372&t=30e33de82f53f0394985d5851edb5b0416265f58&token=1750030372_fae6133409de6ebd4d33b0742ff97e949242cb8a" type="audio/mpeg">
     change de navigateur bogoss
   </audio>
 
-  <!-- Include your external JS file that handles the heart animation -->
   <script src="script.js"></script>
 
   <script>
     document.addEventListener("DOMContentLoaded", function() {
       const audio = document.getElementById("bg-music");
 
-      // Function to play audio when user interacts (due to autoplay restrictions)
       function playAudio() {
         audio.play().catch(error => {
-          console.log("Autoplay blocked:", error); // Handle cases where autoplay is blocked
+          console.log("Autoplay blocked:", error);
         });
-        document.removeEventListener("click", playAudio); // Only trigger once
+        document.removeEventListener("click", playAudio);
       }
 
-      // Trigger music playback on the first click event
       document.addEventListener("click", playAudio);
     });
   </script>
