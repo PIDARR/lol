@@ -7,17 +7,29 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+
   <canvas id="heartCanvas"></canvas>
 
-  <audio id="bg-music" loop preload="auto">
+  <audio id="bg-music" loop>
     <source src="assets/cha.mp3" type="audio/mpeg">
-    Your browser does not support the audio element.
+    change de navigateur bogoss
   </audio>
 
-  <div id="start-overlay">
-    <p>Tap or click anywhere to play music ❤️</p>
-  </div>
-
   <script src="script.js"></script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const audio = document.getElementById("bg-music");
+
+      function playAudio() {
+        audio.play().catch(error => {
+          console.log("Autoplay blocked:", error);
+        });
+        document.removeEventListener("click", playAudio);
+      }
+
+      document.addEventListener("click", playAudio);
+    });
+  </script>
 </body>
 </html>
