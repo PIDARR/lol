@@ -7,6 +7,29 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-azi hein
+
+  <canvas id="heartCanvas"></canvas>
+
+  <audio id="bg-music" loop>
+    <source src="assets/cha.mp3" type="audio/mpeg">
+    change de navigateur bogoss
+  </audio>
+
+  <script src="script.js"></script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const audio = document.getElementById("bg-music");
+
+      function playAudio() {
+        audio.play().catch(error => {
+          console.log("Autoplay blocked:", error);
+        });
+        document.removeEventListener("click", playAudio);
+      }
+
+      document.addEventListener("click", playAudio);
+    });
+  </script>
 </body>
 </html>

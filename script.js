@@ -10,9 +10,9 @@ const idleSpeed = 0.008;
 
 let ripples = [];
 const rippleRadius = 120;
-const rippleStrength = 12;
+const rippleStrength = 30;
 const rippleDecay = 0.95;
-const rippleWaveSpeed = 2;
+const rippleWaveSpeed = 1.5;
 
 class Particle {
   constructor(x, y) {
