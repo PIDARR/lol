@@ -12,3 +12,30 @@ canvas {
   height: 100vh;
   touch-action: none;
 }
+
+#start-screen {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  touch-action: manipulation; /* better touch response */
+}
+
+#start-btn {
+  padding: 1.5rem 3rem;
+  font-size: 1.8rem;
+  background: #ff3366;
+  color: white;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  box-shadow: 0 10px 30px rgba(255, 51, 102, 0.4);
+  transition: transform 0.2s;
+}
+
+#start-btn:active {
+  transform: scale(0.95);
+}
