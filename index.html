@@ -10,46 +10,51 @@
 
   <canvas id="heartCanvas"></canvas>
 
-<audio id="bg-music" loop preload="auto" muted>
-  <source src="assets/cha.mp3" type="audio/mpeg">
-  Your browser doesn't support audio — sorry bogoss 😔
-</audio>
+  <audio id="bg-music" loop preload="auto">
+    <source src="assets/cha.mp3" type="audio/mpeg">
+    change de navigateur bogoss
+  </audio>
+
+  <!-- Overlay for iOS-friendly gesture -->
+  <div id="start-screen">
+    <button id="start-btn">Tap to play music ❤️</button>
+  </div>
 
   <script src="script.js"></script>
 
   <script>
-    document.addEventListener("DOMContentLoaded", function() {
-      const audio = document.getElementById("bg-music");
+    const audio = document.getElementById('bg-music');
+    const startScreen = document.getElementById('start-screen');
+    const startBtn = document.getElementById('start-btn');
 
-      function tryPlay() {
-        audio.muted = false;  // Make sure it's unmuted right before attempting play
+    // Hide overlay and play on direct button tap/click
+    function startMusic() {
+      startScreen.style.display = 'none';  // or add a class for fade-out
 
-        const playPromise = audio.play();
+      audio.muted = false;
+      audio.currentTime = 0;  // optional: restart from beginning
 
-        if (playPromise !== undefined) {
-          playPromise
-            .then(() => {
-              console.log("Music started successfully!");
-            })
-            .catch(err => {
-              console.error("Play attempt failed:", err.name, err.message);
-              // Common: NotAllowedError means still needs stronger user gesture
-            });
-        }
+      audio.play()
+        .then(() => {
+          console.log('Music playing on iOS Safari!');
+        })
+        .catch(err => {
+          console.error('Play failed:', err);
+          // If still blocked (rare), you can alert or retry
+          alert('Tap again if music doesn\'t start — iOS sometimes needs it twice.');
+        });
+    }
+
+    // Attach directly to the button (Safari likes this best)
+    startBtn.addEventListener('click', startMusic);
+    startBtn.addEventListener('touchend', startMusic);  // for touch reliability
+
+    // Optional: fallback if someone clicks elsewhere first
+    document.addEventListener('click', () => {
+      if (startScreen.style.display !== 'none') {
+        startMusic();
       }
-
-      // Trigger on first click anywhere on the page
-      document.addEventListener("click", function handler() {
-        tryPlay();
-        document.removeEventListener("click", handler);  // Only try once
-      }, { once: true });
-
-      // Extra for mobile/touch (some devices prefer touchend)
-      document.addEventListener("touchend", function handler() {
-        tryPlay();
-        document.removeEventListener("touchend", handler);
-      }, { once: true, passive: true });
-    });
+    }, { once: true });
   </script>
 </body>
 </html>
