@@ -10,7 +10,14 @@
 
   <canvas id="heartCanvas"></canvas>
 
-  <audio id="bg-music" loop>
+<audio id="bg-music" loop preload="auto" muted>
+  <source src="assets/cha.mp3" type="audio/mpeg">
+  Your browser doesn't support audio — sorry bogoss 😔
+</audio>
+
+  <script src="script.js"></script>
+
+  <audio id="bg-music" loop preload="auto" muted>
     <source src="assets/cha.mp3" type="audio/mpeg">
     change de navigateur bogoss
   </audio>
@@ -21,14 +28,34 @@
     document.addEventListener("DOMContentLoaded", function() {
       const audio = document.getElementById("bg-music");
 
-      function playAudio() {
-        audio.play().catch(error => {
-          console.log("Autoplay blocked:", error);
-        });
-        document.removeEventListener("click", playAudio);
+      function tryPlay() {
+        audio.muted = false;  // Make sure it's unmuted right before attempting play
+
+        const playPromise = audio.play();
+
+        if (playPromise !== undefined) {
+          playPromise
+            .then(() => {
+              console.log("Music started successfully!");
+            })
+            .catch(err => {
+              console.error("Play attempt failed:", err.name, err.message);
+              // Common: NotAllowedError means still needs stronger user gesture
+            });
+        }
       }
 
-      document.addEventListener("click", playAudio);
+      // Trigger on first click anywhere on the page
+      document.addEventListener("click", function handler() {
+        tryPlay();
+        document.removeEventListener("click", handler);  // Only try once
+      }, { once: true });
+
+      // Extra for mobile/touch (some devices prefer touchend)
+      document.addEventListener("touchend", function handler() {
+        tryPlay();
+        document.removeEventListener("touchend", handler);
+      }, { once: true, passive: true });
     });
   </script>
 </body>
